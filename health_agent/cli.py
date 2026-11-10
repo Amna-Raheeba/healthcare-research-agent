@@ -24,6 +24,9 @@ def main(argv: list[str] | None = None) -> int:
             "question": state.question,
             "blocked": state.blocked,
             "block_reason": state.block_reason,
+            "abstained": state.abstained,
+            "evidence_strength": state.evidence_strength,
+            "abstention_reason": state.abstention_reason,
             "answer": state.answer,
             "sources": [
                 {"index": i + 1, "doc_id": c.doc_id, "title": c.title, "source": c.source, "year": c.year, "score": c.score}
@@ -38,6 +41,8 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(payload, indent=2))
     else:
         print(state.answer)
+        if state.abstained:
+            print(f"\n[abstained] {state.abstention_reason}")
         if args.show_trace:
             print("\n--- trace ---")
             print(format_trace(state))
