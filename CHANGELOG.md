@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.3.0 — 2026-11-10 — Streamlit dashboard
+
+- Added `dashboard/`: a Streamlit front-end that runs the real
+  pipeline (`health_agent.graph.run`) — question input with preset
+  questions, verified claims with citations and sources, visibly
+  distinct guardrail and ABSTAINED states (with evidence strength and
+  reason), a live abstention-threshold slider, a pipeline-trace view
+  (planner sub-queries, BM25 chunks, per-claim verifier decisions),
+  and the risk–coverage results panel.
+- `dashboard/helpers.py` keeps the formatting and CSV-loading logic
+  Streamlit-free and unit-tested (`tests/test_dashboard_helpers.py`).
+- Streamlit is a dashboard-only dependency: it is not in the core
+  `requirements.txt` and nothing in `health_agent/` imports it.
+
 ## v0.2.0 — 10 Nov 2026
 
 **Selective answering + risk–coverage evaluation.**
