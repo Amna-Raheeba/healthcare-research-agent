@@ -4,9 +4,16 @@ Written as a plain function pipeline rather than a LangGraph graph so it
 runs anywhere Python runs, with no API key. The node boundaries mirror
 exactly the graph you would declare in LangGraph (each step takes and
 returns ``AgentState``), which makes a later port mechanical.
+
+The answer node is also where selective answering happens: before
+composing, it scores the evidence strength (see ``abstention.py``) and
+abstains when the score is below the configured threshold. It lives in
+the answer node rather than as a separate node because it is a decision
+*about* the answer, made with the composer's own relevance filter.
 """
 from __future__ import annotations
 
+from .abstention import abstain_answer, assess
 from .agents.answer import compose_answer
 from .agents.planner import plan_question
 from .agents.retriever import BM25Index, retrieve
@@ -42,6 +49,13 @@ def run(question: str, config: Config | None = None) -> AgentState:
         state.draft_claims = extract_claims(state.chunks)
         state.verified_claims = verify_claims(state.draft_claims, state.chunks, config.min_support_ratio)
 
-    with traced(state, "answer", "compose_from_verified_only"):
-        state.answer = compose_answer(state)
+    with traced(state, "answer", "abstain_or_compose_from_verified_only"):
+        decision = assess(state, config.abstention_threshold)
+        state.evidence_strength = decision.strength
+        if decision.abstain:
+            state.abstained = True
+            state.abstention_reason = decision.reason
+            state.answer = abstain_answer(decision)
+        else:
+            state.answer = compose_answer(state)
     return state
