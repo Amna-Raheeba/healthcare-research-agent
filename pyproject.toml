@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "healthcare-research-agent"
+version = "0.2.0"
+description = "Verified healthcare research agent: agentic RAG with citation verification and medical guardrails over a sample corpus"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Amna Raheeba" }]
+keywords = ["rag", "healthcare", "ai-agents", "citation-verification", "bm25"]
+dependencies = []
+
+[project.optional-dependencies]
+llm = ["openai>=1.30", "anthropic>=0.34"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+health-agent = "health_agent.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["health_agent*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
