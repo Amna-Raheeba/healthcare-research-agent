@@ -67,6 +67,9 @@ class AgentState:
     answer: str = ""
     blocked: bool = False
     block_reason: str = ""
+    abstained: bool = False
+    evidence_strength: float = 0.0
+    abstention_reason: str = ""
     trace: list[TraceStep] = field(default_factory=list)
 
     def citation_map(self) -> dict[int, RetrievedChunk]:
