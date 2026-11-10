@@ -25,3 +25,7 @@ include = ["health_agent*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# GitHub Actions runs the plain `pytest` binary, which (unlike
+# `python -m pytest`) does not put the CWD on sys.path. Without this the
+# tests only passed because of the local invocation style.
+pythonpath = ["."]
