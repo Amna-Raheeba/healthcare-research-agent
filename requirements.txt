@@ -1,0 +1,9 @@
+# Core pipeline: Python standard library only — nothing required here.
+# Development / tests:
+pytest>=8.0
+# Optional LLM mode only (health_agent/llm.py):
+# openai>=1.30
+# anthropic>=0.34
+# Optional dense retrieval experiments:
+# faiss-cpu>=1.8
+# chromadb>=0.5
